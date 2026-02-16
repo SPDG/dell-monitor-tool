@@ -76,3 +76,7 @@ The tool searches for `monitors.json` in the following locations:
 
 ## Environment Variables
 - `MONITOR_BUS`: Set this to a specific bus (e.g., `/dev/i2c-7`) to bypass discovery.
+
+## CI/CD
+- **CI**: Every push to `master` triggers a build and test suite.
+- **Releases**: Pushing a tag (e.g., `v1.0.0`) automatically creates a GitHub release with pre-built binaries for Linux (amd64 and arm64).
