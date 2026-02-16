@@ -1,0 +1,64 @@
+[
+  {
+    "model": "Dell U4021QW",
+    "match": "U4021QW",
+    "features": {
+      "input_source": {
+        "vcp": "0x60",
+        "values": {
+          "dp": "0x0f0f",
+          "hdmi1": "0x0f11",
+          "hdmi2": "0x0f12",
+          "usb-c": "0x0f19"
+        }
+      },
+      "pbp_mode": {
+        "vcp": "0xE9",
+        "values": {
+          "off": "0x00",
+          "on": "0x24"
+        }
+      },
+      "pbp_sub_input": {
+        "vcp": "0xE8",
+        "values": {
+          "dp": "0x0f",
+          "hdmi1": "0x11",
+          "hdmi2": "0x12",
+          "usb-c": "0x19"
+        }
+      },
+      "usb_selection": {
+        "vcp": "0xE2",
+        "values": {
+          "usb-c": "0x01",
+          "usb-b": "0x02"
+        }
+      }
+    },
+    "presets": {
+      "computer-1": {
+        "input_source": "dp",
+        "pbp_mode": "off",
+        "usb_selection": "usb-b"
+      },
+      "computer-2": {
+        "input_source": "usb-c",
+        "pbp_mode": "off",
+        "usb_selection": "usb-c"
+      },
+      "divided": {
+        "pbp_mode": "on",
+        "input_source": "dp",
+        "pbp_sub_input": "usb-c",
+        "usb_selection": "usb-c"
+      },
+      "divided-swapped": {
+        "pbp_mode": "on",
+        "input_source": "usb-c",
+        "pbp_sub_input": "dp",
+        "usb_selection": "usb-c"
+      }
+    }
+  }
+]
