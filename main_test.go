@@ -51,10 +51,18 @@ func TestParseHex(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		got := parseHex(c.input)
+		got, err := parseHex(c.input)
+		if err != nil {
+			t.Errorf("parseHex(%s) returned error: %v", c.input, err)
+			continue
+		}
 		if got != c.expected {
 			t.Errorf("parseHex(%s) = 0x%02X; want 0x%02X", c.input, got, c.expected)
 		}
+	}
+
+	if _, err := parseHex("invalid"); err == nil {
+		t.Error("parseHex(invalid) should have returned an error")
 	}
 }
 
@@ -69,9 +77,17 @@ func TestParseHex16(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		got := parseHex16(c.input)
+		got, err := parseHex16(c.input)
+		if err != nil {
+			t.Errorf("parseHex16(%s) returned error: %v", c.input, err)
+			continue
+		}
 		if got != c.expected {
 			t.Errorf("parseHex16(%s) = 0x%04X; want 0x%04X", c.input, got, c.expected)
 		}
+	}
+
+	if _, err := parseHex16("invalid"); err == nil {
+		t.Error("parseHex16(invalid) should have returned an error")
 	}
 }
