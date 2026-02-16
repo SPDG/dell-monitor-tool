@@ -48,6 +48,8 @@ func TestParseHex(t *testing.T) {
 		{"10", 0x10},
 		{"0xFF", 0xFF},
 		{"FF", 0xFF},
+		{"0x00", 0x00},
+		{"00", 0x00},
 	}
 
 	for _, c := range cases {
@@ -74,6 +76,8 @@ func TestParseHex16(t *testing.T) {
 		{"0x0F0F", 0x0F0F},
 		{"0f0f", 0x0F0F},
 		{"0x19", 0x0019},
+		{"0x0000", 0x0000},
+		{"0000", 0x0000},
 	}
 
 	for _, c := range cases {

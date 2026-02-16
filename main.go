@@ -252,11 +252,11 @@ func applyFeature(target *Device, featureName, valueLabel string) error {
 	}
 	vcp, err := parseHex(feat.VCP)
 	if err != nil {
-		return fmt.Errorf("config error for %s VCP: %v", featureName, err)
+		return fmt.Errorf("config error for %s VCP: %w", featureName, err)
 	}
 	val, err := parseHex16(valStr)
 	if err != nil {
-		return fmt.Errorf("config error for %s value %s: %v", featureName, valueLabel, err)
+		return fmt.Errorf("config error for %s value %s: %w", featureName, valueLabel, err)
 	}
 	return setVCP(target.Bus, vcp, val)
 }
