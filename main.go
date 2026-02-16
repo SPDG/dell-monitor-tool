@@ -52,22 +52,30 @@ func getChecksum(data []byte) byte {
 	return checksum
 }
 
-func parseHex(s string) byte {
+func parseHex(s string) (byte, error) {
 	var b byte
-	fmt.Sscanf(s, "0x%x", &b)
-	if b == 0 {
-		fmt.Sscanf(s, "%x", &b)
+	n, _ := fmt.Sscanf(s, "0x%x", &b)
+	if n == 1 {
+		return b, nil
 	}
-	return b
+	n, _ = fmt.Sscanf(s, "%x", &b)
+	if n == 1 {
+		return b, nil
+	}
+	return 0, fmt.Errorf("invalid hex byte: %s", s)
 }
 
-func parseHex16(s string) uint16 {
+func parseHex16(s string) (uint16, error) {
 	var v uint16
-	fmt.Sscanf(s, "0x%x", &v)
-	if v == 0 {
-		fmt.Sscanf(s, "%x", &v)
+	n, _ := fmt.Sscanf(s, "0x%x", &v)
+	if n == 1 {
+		return v, nil
 	}
-	return v
+	n, _ = fmt.Sscanf(s, "%x", &v)
+	if n == 1 {
+		return v, nil
+	}
+	return 0, fmt.Errorf("invalid hex uint16: %s", s)
 }
 
 func setVCP(bus string, vcp byte, value uint16) error {
@@ -242,7 +250,15 @@ func applyFeature(target *Device, featureName, valueLabel string) error {
 	if !ok {
 		return fmt.Errorf("invalid value %s for %s. Options: %v", valueLabel, featureName, feat.Values)
 	}
-	return setVCP(target.Bus, parseHex(feat.VCP), parseHex16(valStr))
+	vcp, err := parseHex(feat.VCP)
+	if err != nil {
+		return fmt.Errorf("config error for %s VCP: %w", featureName, err)
+	}
+	val, err := parseHex16(valStr)
+	if err != nil {
+		return fmt.Errorf("config error for %s value %s: %w", featureName, valueLabel, err)
+	}
+	return setVCP(target.Bus, vcp, val)
 }
 
 func main() {
@@ -395,7 +411,12 @@ func main() {
 		fmt.Printf("--- Status for %s (%s) ---\n", target.Bus, target.Name)
 		if target.Config != nil {
 			for name, feat := range target.Config.Features {
-				v, _ := getVCP(target.Bus, parseHex(feat.VCP))
+				vcp, err := parseHex(feat.VCP)
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "Config error for %s: %v\n", name, err)
+					continue
+				}
+				v, _ := getVCP(target.Bus, vcp)
 				fmt.Printf("%s: 0x%04X\n", name, v)
 			}
 		}
