@@ -358,10 +358,16 @@ func main() {
 	}
 
 	if *inputPtr != "" {
-		applyFeature(target, "input_source", *inputPtr)
+		if err := applyFeature(target, "input_source", *inputPtr); err != nil {
+			fmt.Fprintf(os.Stderr, "Error applying input source: %v\n", err)
+			os.Exit(1)
+		}
 	}
 	if *pbpPtr != "" {
-		applyFeature(target, "pbp_mode", *pbpPtr)
+		if err := applyFeature(target, "pbp_mode", *pbpPtr); err != nil {
+			fmt.Fprintf(os.Stderr, "Error applying PBP mode: %v\n", err)
+			os.Exit(1)
+		}
 	}
 
 	if *statusPtr || (*inputPtr == "" && *pbpPtr == "" && *presetPtr == "" && !*scanPtr) {
