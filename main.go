@@ -248,6 +248,7 @@ func applyFeature(target *Device, featureName, valueLabel string) error {
 func main() {
 	configPath := flag.String("config", "", "Path to monitor configurations")
 	busPtr := flag.String("bus", os.Getenv("MONITOR_BUS"), "I2C bus (overrides discovery)")
+	detectPtr := flag.Bool("detect", false, "Detect monitors")
 	statusPtr := flag.Bool("status", false, "Show current status")
 	inputPtr := flag.String("input", "", "Switch input source")
 	pbpPtr := flag.String("pbp", "", "Set PBP mode")
@@ -273,6 +274,22 @@ func main() {
 	}
 
 	devices := discoverDevices(configs)
+
+	if *detectPtr {
+		if len(devices) == 0 {
+			fmt.Fprintln(os.Stderr, "No monitors detected.")
+			return
+		}
+		fmt.Println("Discovered Devices:")
+		for _, d := range devices {
+			cfgStatus := "Generic"
+			if d.Config != nil {
+				cfgStatus = d.Config.Model
+			}
+			fmt.Printf("%s: %s [%s]\n", d.Bus, d.Name, cfgStatus)
+		}
+		return
+	}
 
 	var target *Device
 	if *busPtr != "" {
