@@ -272,6 +272,10 @@ func main() {
 	devices := discoverDevices(configs)
 
 	if *detectPtr {
+		if len(devices) == 0 {
+			fmt.Fprintln(os.Stderr, "No monitors detected.")
+			return
+		}
 		fmt.Println("Discovered Devices:")
 		for _, d := range devices {
 			cfgStatus := "Generic"
