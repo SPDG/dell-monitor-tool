@@ -268,6 +268,7 @@ func main() {
 		configs, err = loadConfigs(actualConfigPath)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error loading configuration from %s: %v\n", actualConfigPath, err)
+			fmt.Fprintf(os.Stderr, "Continuing with default settings.\n")
 		}
 	}
 
