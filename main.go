@@ -121,7 +121,7 @@ func getVCP(bus string, vcp byte) (uint16, error) {
 		reply := make([]byte, 16)
 		n, err := f.Read(reply)
 		if err == nil && n >= 10 {
-			for i := 0; i < n-5; i++ {
+			for i := 0; i <= n-10; i++ {
 				if reply[i] == 0x02 && reply[i+2] == vcp {
 					return uint16(reply[i+6])<<8 | uint16(reply[i+7]), nil
 				}
